@@ -5,32 +5,23 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Text Expander</title>
+    <script src="./external/jquery3.6.0.min.js"></script>
+
 </head>
 <body>
-    <form id="add-form">
-        <input type="text" name="shortcut">
+    <form id="add_form">
+        <input type="text" id="shortcut" name="shortcut" required>
         <label for="shortcut">Shortcut</label>
-        <textarea id="stext"></textarea> 
         <label for="shortcut">Shortcut Text</label>
         <button>Add</button>
     </form>
+    <textarea id="stext" name="stext"></textarea> 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
 </body>
+
+<script src="./options.js"></script>
+
+
 </html>
 
 

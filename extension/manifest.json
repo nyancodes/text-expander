@@ -21,8 +21,20 @@
         "http://*/*",
         "https://*/*",
         "activeTab",
-        "storage"
-        
-    ]
+        "storage"   
+    ],
+
+    "content_scripts": [
+        {
+        "all_frames": false,
+        "matches": ["<all_urls>"],
+        "exclude_matches": [],
+          "js": [
+            "./external/jquery3.6.0.min.js",
+            "./options.js"
+          ]
+        }
+      ]
+
 }
 

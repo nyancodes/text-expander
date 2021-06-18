@@ -2,47 +2,48 @@ chrome.browserAction.onClicked.addListener(() => {
     chrome.runtime.openOptionsPage();
 })
 
-chrome.tabs.onActivated.addListener(tab => {
-    chrome.tabs.get(tab.tabId, current_tab_info => {
-        console.log(current_tab_info.url);
-    });
-});
+// chrome.tabs.onActivated.addListener(tab => {
+//     chrome.tabs.get(tab.tabId, current_tab_info => {
+//         console.log(current_tab_info.url);
+//     });
+// });
 
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    if (request.message === 'insert') {
-        let request = insert_records(request.payload);
+chrome.runtime.onMessage.addListener((req, sender, sendResponse) => {
+    if (req.message === 'insert') {
+        console.log(payload);
+        let r = insert_records(req.payload);
 
-        request.then(res => {
+        r.then(res => {
             chrome.runtime.sendMessage({
                 message: "insert_success",
                 payload: res
             })
         })
     }
-    else if (request.message === 'get') {
-        let request = get_records(request.payload);
+    else if (req.message === 'get') {
+        let r = get_records(req.payload);
 
-        request.then(res => {
+        r.then(res => {
             chrome.runtime.sendMessage({
                 message: "get_success",
                 payload: res
             })
         })
     }
-    else if (request.message === 'update') {
-        let request = update_record(request.payload);
+    else if (req.message === 'update') {
+        let r = update_record(req.payload);
 
-        request.then(res => {
+        r.then(res => {
             chrome.runtime.sendMessage({
                 message: "update_success",
                 payload: res
             })
         })
     }
-    else if (request.message === 'delete') {
-        let request = delete_records(request.payload);
+    else if (req.message === 'delete') {
+        let r = delete_records(req.payload);
 
-        request.then(res => {
+        r.then(res => {
             chrome.runtime.sendMessage({
                 message: "delete_success",
                 payload: res
@@ -69,7 +70,7 @@ let shorts = [
 
 function create_db() {
 
-    const request = window.indexedDB.open('Database');
+    const request = window.indexedDB.open('database');
 
     request.onerror = function (event) {
         console.log("Problem opening DB");
@@ -111,9 +112,8 @@ function delete_db() {
 function insert_records(records) {
     if (db) {
 
-
         const insert_transaction = db.transcation("shorts", "readwrite");
-        const objectStore = insert_transaction.objectStore("roster");
+        const objectStore = insert_transaction.objectStore("shorts");
 
         return new Promise((resolve, reject) => {
 
@@ -127,8 +127,7 @@ function insert_records(records) {
                 resolve(false);
             }
 
-
-            shorts.forEach(s => {
+            records.forEach(s => {
                 let request = objectStore.add(s);
 
                 request.onsuccess = function () {
@@ -149,7 +148,7 @@ function get_record(record) {
     if (db) {
 
         const get_transaction = db.transcation("shorts", "readwrite");
-        const objectStore = insert_transaction.objectStore("roster");
+        const objectStore = insert_transaction.objectStore("shorts");
 
 
         return new Promise((resolved, reject) => {
